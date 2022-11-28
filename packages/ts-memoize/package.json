@@ -1,5 +1,22 @@
 {
   "name": "@code-workers.io/ts-memoize",
-  "version": "1.0.1",
-  "type": "commonjs"
+  "version": "1.0.2",
+  "type": "commonjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/code-workers-io/ts-memoize.git"
+  },
+  "description": "A lightweight utility library to memoize function calls",
+  "keywords": [
+    "memoize",
+    "memoization",
+    "cache",
+    "function",
+    "typescript",
+    "javascript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

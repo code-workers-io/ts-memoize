@@ -1,6 +1,13 @@
 /**
  * Memoize decorator
- * @constructor
+ * @example
+ *
+ * class Test {
+  @Memoize()
+  calculate(a: number, b: number): number {
+    return a + b;
+  }
+}
  */
 export function Memoize() {
   return function (
@@ -18,25 +25,28 @@ export function Memoize() {
 }
 
 /**
- * Memoize function
- * @param projectionFn
- * @param comparatorFn
+ * Memoize a pure function and only recalculate if the arguments change.
+ * @param projectionFn - the function to memoize
+ * @param comparatorFn - a function to compare the arguments. By default an equality check (===) is used.
+ *
+ * @example
+ * const memoizedFn = memoize((a, b) => a + b).memoized(a, b);
  */
-export function memoize(
-  projectionFn: ProjectionFn,
+export function memoize<T>(
+  projectionFn: ProjectionFn<T>,
   comparatorFn?: ComparatorFn
-): any {
+): MemoizedProjection<T> {
   return resultMemoize(projectionFn, comparatorFn ?? defaultComparatorFn);
 }
 
-export type ProjectionFn = (...args: any[]) => any;
+export type ProjectionFn<T> = (...args: any[]) => T;
 
 export type ComparatorFn = (a: any, b: any) => boolean;
 
-export type MemoizedProjection = {
-  memoized: ProjectionFn;
+export type MemoizedProjection<T> = {
+  memoized: ProjectionFn<T>;
   reset: () => void;
-  setResult: (result?: any) => void;
+  setResult: (result?: T) => void;
 };
 
 function defaultComparatorFn(a: any, b: any): boolean {
@@ -64,18 +74,18 @@ function isArgumentsChanged(
   return false;
 }
 
-function resultMemoize(
-  projectionFn: ProjectionFn,
+function resultMemoize<T>(
+  projectionFn: ProjectionFn<T>,
   isResultEqual: ComparatorFn
 ) {
   return defaultMemoize(projectionFn, isEqualCheck, isResultEqual);
 }
 
-function defaultMemoize(
-  projectionFn: ProjectionFn,
+function defaultMemoize<T>(
+  projectionFn: ProjectionFn<T>,
   isArgumentsEqual = isEqualCheck,
   isResultEqual = isEqualCheck
-): MemoizedProjection {
+): MemoizedProjection<T> {
   let lastArguments: null | IArguments = null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, , , , ,
   let lastResult: any = null;

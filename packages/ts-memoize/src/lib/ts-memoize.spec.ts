@@ -12,7 +12,7 @@ class Test {
   }
 }
 describe('memoize function', () => {
-  let memoizer: MemoizedProjection;
+  let memoizer: MemoizedProjection<number>;
   let projectionFnSpy: jest.Mock;
 
   beforeEach(() => {
